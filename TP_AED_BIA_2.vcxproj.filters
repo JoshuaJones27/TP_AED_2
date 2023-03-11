@@ -24,14 +24,32 @@
     <ClCompile Include="cliente.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="meios.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="gestor.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cliente.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="meios.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="gestor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="clientes.txt">
+      <Filter>Data</Filter>
+    </Text>
+    <Text Include="gestores.txt">
+      <Filter>Data</Filter>
+    </Text>
+    <Text Include="meios.txt">
       <Filter>Data</Filter>
     </Text>
   </ItemGroup>

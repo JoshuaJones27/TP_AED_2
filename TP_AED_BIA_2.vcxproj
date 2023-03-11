@@ -128,13 +128,19 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="cliente.c" />
+    <ClCompile Include="gestor.c" />
     <ClCompile Include="main.c" />
+    <ClCompile Include="meios.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cliente.h" />
+    <ClInclude Include="gestor.h" />
+    <ClInclude Include="meios.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="clientes.txt" />
+    <Text Include="gestores.txt" />
+    <Text Include="meios.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
