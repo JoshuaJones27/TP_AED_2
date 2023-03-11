@@ -4,6 +4,7 @@
 #include "cliente.h"
 #include "gestor.h"
 #include "meios.h"
+#include "reserva.h"
 
 int menu()
 {
@@ -23,55 +24,6 @@ int menu()
 }
 
 void menuCliente();
-
-//int menuLogin()
-//{
-//	Cliente* inicio = NULL;
-//	inicio = lerCliente();
-//	int opcao;
-//	char nomeUtilizador[100], palavraPasse[30];
-//	system("cls");
-//	printf("Menu Login\n");
-//	printf("Pressione 1 para Cliente\n");
-//	printf("Pressione 2 para Gestor\n");
-//	printf("Opcao:");
-//	scanf("%d", &opcao);
-//	switch (opcao)
-//	{
-//	case 1:
-//		printf("Insira os seus dados:\n");
-//		printf("Nome utilizador: ");
-//		scanf("%s", nomeUtilizador);
-//		printf("Password: ");
-//		scanf("%s", palavraPasse);
-//		if (loginCliente(inicio, nomeUtilizador, palavraPasse))
-//		{
-//			printf("Login efetuado com sucesso!\n");
-//			system("pause");
-//			menuCliente(inicio->nif);
-//		}
-//		else
-//		{
-//			printf("Dados incorretos!\n");
-//			system("pause");
-//		}
-//		break;
-//
-//		/*case 2:
-//			printf("Insira os seus dados:\n");
-//			if ()
-//			{
-//			}
-//			else
-//			{
-//				printf("Dados incorretos!\n");
-//				system("pause");
-//			}
-//			break;*/
-//	default:
-//		break;
-//	}
-//}
 
 void menuLogin()
 {
@@ -107,6 +59,8 @@ void menuLogin()
 			system("pause");
 		}
 		break;
+	case 2:
+
 	default:
 		break;
 	}

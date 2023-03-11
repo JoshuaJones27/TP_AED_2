@@ -248,15 +248,31 @@ float consultarSaldo(Cliente* inicio, char* nif)
 
 float carregarSaldo(Cliente* inicio, char* nif, float valor)
 {
-	Cliente* atual = inicio;
-	while (atual != NULL)
+	// Percorre a lista de clientes e busca o cliente com o NIF correspondente
+	Cliente* aux = inicio;
+	while (aux != NULL)
 	{
-		if (strcmp(atual->nif, nif) == 0)
+		if (strcmp(aux->nif, nif) == 0)
 		{
-			atual->saldo += valor;
-			return atual->saldo;
+			// Adiciona o valor ao saldo do cliente
+			aux->saldo += valor;
+
+			// Atualiza o arquivo com os novos dados
+			if (guardarClientes(inicio))
+			{
+				// Retorna o novo saldo
+				return aux->saldo;
+			}
+			else
+			{
+				// Caso haja algum erro ao atualizar o arquivo, retorna o saldo anterior
+				aux->saldo -= valor;
+				return -1;
+			}
 		}
-		atual = atual->prox;
+		aux = aux->prox;
 	}
+
+	// Caso o cliente não seja encontrado, retorna -1
 	return -1;
 }

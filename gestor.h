@@ -15,3 +15,4 @@ int existeGestor(Gestor* inicio, int* id);
 Gestor* removerGestor(Gestor* inicio, int* i);
 int guardarGestores(Gestor* inicio);
 Gestor* lerGestor();
+void editarGestor(Gestor* inicio, char* id);

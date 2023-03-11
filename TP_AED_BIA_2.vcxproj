@@ -131,11 +131,13 @@
     <ClCompile Include="gestor.c" />
     <ClCompile Include="main.c" />
     <ClCompile Include="meios.c" />
+    <ClCompile Include="reserva.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cliente.h" />
     <ClInclude Include="gestor.h" />
     <ClInclude Include="meios.h" />
+    <ClInclude Include="reserva.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="clientes.txt" />
