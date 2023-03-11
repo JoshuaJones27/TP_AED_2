@@ -1,0 +1,4 @@
+123;ASDasdsad;asdasd;12.000000
+25875958;Beatriz Morim;Rua Quinta dos asd;13.000000
+269532668;Joshua Jones;Rua Quinta dos Lagos;12.000000
+124;Asre;Asdw;1245.000000
