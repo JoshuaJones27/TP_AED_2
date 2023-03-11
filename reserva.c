@@ -55,7 +55,7 @@ Reserva* lerReserva()
 // Inser��o de um novo registo
 Reserva* inserirReserva(Reserva* inicio, char idReserv[], char nifClient[], char idMeioEletric[])
 {
-	if (!existeReserva(inicio, idReserv))
+	if (!existeidReserva(inicio, idReserv))
 	{
 		Reserva* novo = malloc(sizeof(idReserv));
 		if (novo != NULL)
