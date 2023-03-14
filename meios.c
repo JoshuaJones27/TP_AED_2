@@ -217,7 +217,7 @@ void listarMeiosPorGeocodigo(MeioEletrico* inicio, char* geocodigo) {
 	printf("Lista de meios eletricos com o geocodigo %s:\n", geocodigo);
 	while (aux != NULL) {
 		if (strcmp(aux->geocodigo, geocodigo) == 0) {
-			printf("Tipo: %s | ID: %d | Carga de bateria: %.2f | Custo por hora: %.2f | Geocodigo: %s | Reservado: %d\n",
+			printf("Tipo: %s | ID: %s | Carga de bateria: %.2f | Custo por hora: %.2f | Geocodigo: %s | Reservado: %d\n",
 				aux->tipo, aux->id, aux->carga_bateria, aux->custo_hora, aux->geocodigo, aux->reservado);
 			found = 1;
 		}

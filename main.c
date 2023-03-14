@@ -25,13 +25,55 @@ int menu()
 
 void menuCliente();
 
+//void menuLogin()
+//{
+//	Cliente* inicio = NULL;
+//	inicio = lerCliente();
+//	int opcao;
+//	char nomeUtilizador[100], palavraPasse[30];
+//	char* nif; // Declare a variable to hold the nif value
+//	system("cls");
+//	printf("Menu Login\n");
+//	printf("Pressione 1 para Cliente\n");
+//	printf("Pressione 2 para Gestor\n");
+//	printf("Opcao:");
+//	scanf("%d", &opcao);
+//	switch (opcao)
+//	{
+//	case 1:
+//		printf("Insira os seus dados:\n");
+//		printf("Nome utilizador: ");
+//		scanf("%s", nomeUtilizador);
+//		printf("Password: ");
+//		scanf("%s", palavraPasse);
+//		nif = loginCliente(inicio, nomeUtilizador, palavraPasse); // Assign the returned nif to the variable
+//		if (nif != NULL)
+//		{
+//			printf("Login efetuado com sucesso!\n");
+//			system("pause");
+//			system("cls");
+//			menuCliente(inicio, nif); // Pass the nif to the menuCliente function
+//		}
+//		else
+//		{
+//			printf("Dados incorretos!\n");
+//			system("pause");
+//		}
+//		break;
+//	case 2:
+//
+//	default:
+//		break;
+//	}
+//}
+
 void menuLogin()
 {
 	Cliente* inicio = NULL;
 	inicio = lerCliente();
 	int opcao;
 	char nomeUtilizador[100], palavraPasse[30];
-	char* nif; // Declare a variable to hold the nif value
+	char* nif = NULL; // Initialize the nif variable to NULL
 	system("cls");
 	printf("Menu Login\n");
 	printf("Pressione 1 para Cliente\n");
@@ -41,22 +83,33 @@ void menuLogin()
 	switch (opcao)
 	{
 	case 1:
-		printf("Insira os seus dados:\n");
-		printf("Nome utilizador: ");
-		scanf("%s", nomeUtilizador);
-		printf("Password: ");
-		scanf("%s", palavraPasse);
-		nif = loginCliente(inicio, nomeUtilizador, palavraPasse); // Assign the returned nif to the variable
-		if (nif != NULL)
+		while (nif == NULL) // Add a loop to continue until the client successfully logs in or chooses to exit
 		{
-			printf("Login efetuado com sucesso!\n");
-			system("pause");
-			menuCliente(inicio, nif); // Pass the nif to the menuCliente function
-		}
-		else
-		{
-			printf("Dados incorretos!\n");
-			system("pause");
+			printf("Insira os seus dados:\n");
+			printf("Nome utilizador: ");
+			scanf("%s", nomeUtilizador);
+			printf("Password: ");
+			scanf("%s", palavraPasse);
+			nif = loginCliente(inicio, nomeUtilizador, palavraPasse);
+			if (nif != NULL)
+			{
+				printf("Login efetuado com sucesso!\n");
+				system("pause");
+				system("cls");
+				menuCliente(inicio, nif);
+			}
+			else
+			{
+				printf("Dados incorretos!\n");
+				printf("Pressione 1 para tentar novamente ou 2 para sair.\n");
+				scanf("%d", &opcao);
+				if (opcao == 2)
+				{
+					system("cls");
+					break; // Exit the loop if the client chooses to exit
+				}
+				system("cls");
+			}
 		}
 		break;
 	case 2:
@@ -69,7 +122,7 @@ void menuLogin()
 void menuCliente(Cliente* inicio, char* nif)
 {
 	printf("Menu Cliente\n");
-	printf("%s\n", nif);
+	//printf("%s\n", nif);
 	int op;
 	do
 	{
@@ -81,10 +134,12 @@ void menuCliente(Cliente* inicio, char* nif)
 		printf("0 - Logout\n");
 		printf("Opcao:");
 		scanf("%d", &op);
+		system("cls");
 		switch (op)
 		{
 		case 1:
 		{
+			printf("========== Consultar Saldo ==========");
 			float saldo = consultarSaldo(inicio, nif);
 			if (saldo >= 0)
 			{
@@ -95,10 +150,12 @@ void menuCliente(Cliente* inicio, char* nif)
 				printf("NIF nao encontrado\n");
 			}
 			system("pause");
+			system("cls");
 			break;
 		}
 		case 2:
 		{
+			printf("========== Carregar Saldo ==========");
 			float valor;
 			printf("Insira o valor a carregar: ");
 			scanf("%f", &valor);
@@ -111,10 +168,12 @@ void menuCliente(Cliente* inicio, char* nif)
 				printf("Nao foi possivel carregar o saldo!\n");
 			}
 			system("pause");
+			system("cls");
 			break;
 		}
 		case 3:
 		{
+			printf("========== Alugar Meio ==========");
 			char idMeioEletrico[50];
 			int reserva;
 
@@ -122,6 +181,8 @@ void menuCliente(Cliente* inicio, char* nif)
 			MeioEletrico* inicio = lerMeioEletrico();
 			if (inicio == NULL) {
 				printf("Nao foi possivel ler os meios eletricos!\n");
+				system("pause");
+				system("cls");
 				break;
 			}
 
@@ -139,22 +200,30 @@ void menuCliente(Cliente* inicio, char* nif)
 			{
 				printf("Meio eletrico nao encontrado!\n");
 			}
-
+			system("pause");
+			system("cls");
 			break;
 		}
 
 		case 4:
 		{
+			printf("========== Listar por Percentagem Autonomia ==========");
 			MeioEletrico* inicio = lerMeioEletrico();
 			listarMeiosPorCargaBateria(inicio);
+			system("pause");
+			system("cls");
+			break;
 		}
 		case 5:
 		{
+			printf("========== Listar por Geocodigo ==========");
 			MeioEletrico* inicio = lerMeioEletrico();
 			char geocodigo[50];
 			printf("Insira o geocodigo a pesquisar: ");
 			scanf("%s", geocodigo);
 			listarMeiosPorGeocodigo(inicio, geocodigo);
+			system("pause");
+			system("cls");
 			break;
 		}
 		}
