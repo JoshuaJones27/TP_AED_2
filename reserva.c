@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "reserva.h"
+#include "meios.h"
 
 int guardarReserva(Reserva* inicio)
 {
@@ -25,53 +26,98 @@ int guardarReserva(Reserva* inicio)
 		return(0);
 	}
 }
-Reserva* lerReserva()
-{
-	FILE* fp;
+//Reserva* lerReserva()
+//{
+//	FILE* fp;
+//
+//	char idReserv[20]; // Id reserva
+//	char nifClient[20]; // Nif do cliente
+//	char idMeioEletric[50]; // ID do meio el�trico
+//
+//	Reserva* aux = NULL;
+//
+//	fp = fopen("./reserva.txt", "r");
+//	if (fp == NULL)
+//	{
+//		printf("Erro ao abrir o ficheiro de reserva\n");
+//		return NULL;
+//	}
+//
+//	char line[350];
+//	while (fgets(line, 350, fp) != NULL)
+//	{
+//		sscanf(line, "%[^;];%[^;];%[^;]\n", idReserv, nifClient, idMeioEletric);
+//		aux = inserirReserva(aux, idReserv, nifClient, idMeioEletric);
+//	}
+//
+//	fclose(fp);
+//	return aux;
+//}
 
-	char idReserv[20]; // Id reserva
-	char nifClient[20]; // Nif do cliente
-	char idMeioEletric[50]; // ID do meio el�trico
+//int ultimoIdReserva = 0;
 
-	Reserva* aux = NULL;
+//void readLastReservaIdFromFile() {
+//	FILE* fp = fopen("./reservas.txt", "r");
+//	if (fp == NULL) {
+//		printf("Error opening file.\n");
+//		exit(1);
+//	}
+//
+//	char line[100];
+//	while (fgets(line, 100, fp) != NULL) {
+//		char* idReserva = strtok(line, ",");
+//		ultimoIdReserva = atoi(idReserva);
+//	}
+//
+//	fclose(fp);
+//}
+//
+//void writeLastReservaIdToFile() {
+//	FILE* fp = fopen("./reservas.txt", "w");
+//	if (fp == NULL) {
+//		printf("Error opening file.\n");
+//		exit(1);
+//	}
+//
+//	fprintf(fp, "%d\n", ultimoIdReserva);
+//
+//	fclose(fp);
+//}
 
-	fp = fopen("./reserva.txt", "r");
-	if (fp == NULL)
-	{
-		printf("Erro ao abrir o ficheiro de reserva\n");
-		return NULL;
-	}
+//Reserva* inserirReserva(Reserva* inicio, char idReserv[], char nifClient[], char idMeioEletric[]) {
+//	// Aloca espaço para uma nova reserva
+//	Reserva* novaReserva = malloc(sizeof(Reserva));
+//
+//	// Verifica se a alocação foi bem-sucedida
+//	if (novaReserva != NULL) {
+//		// Lê o último id de reserva a partir do arquivo
+//		readLastReservaIdFromFile();
+//
+//		// Incrementa o último id de reserva
+//		ultimoIdReserva++;
+//
+//		// Atribui o novo valor de idReserva à nova reserva
+//		sprintf(novaReserva->idReserva, "%d", ultimoIdReserva);
+//
+//		// Copia os valores para a nova reserva
+//		strcpy(novaReserva->nifCliente, nifCliente);
+//		strcpy(novaReserva->idMeioEletrico, idMeioEletrico);
+//
+//		// Insere a nova reserva no início da lista
+//		novaReserva->prox = inicio;
+//
+//		// Salva o último id de reserva no arquivo
+//		writeLastReservaIdToFile();
+//
+//		// Retorna o novo início da lista
+//		return novaReserva;
+//	}
+//	else {
+//		// Se a alocação falhar, retorna o início da lista original
+//		return inicio;
+//	}
+//}
 
-	char line[350];
-	while (fgets(line, 350, fp) != NULL)
-	{
-		sscanf(line, "%[^;];%[^;];%[^;]\n", idReserv, nifClient, idMeioEletric);
-		aux = inserirCliente(aux, idReserv, nifClient, idMeioEletric);
-	}
-
-	fclose(fp);
-	return aux;
-}
-// Inser��o de um novo registo
-Reserva* inserirReserva(Reserva* inicio, char idReserv[], char nifClient[], char idMeioEletric[])
-{
-	if (!existeidReserva(inicio, idReserv))
-	{
-		Reserva* novo = malloc(sizeof(idReserv));
-		if (novo != NULL)
-		{
-			strcpy(novo->idReserva, idReserv);
-			strcpy(novo->nifCliente, nifClient);
-			strcpy(novo->idMeioEletrico, idMeioEletric);
-			novo->prox = inicio;
-			return novo;
-		}
-		else
-		{
-			return inicio;
-		}
-	}
-}
 // listar na consola o conte�do da lista ligada
 void listarReserva(Reserva* inicio)
 {

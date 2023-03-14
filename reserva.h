@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include "meios.h"
 
 typedef struct reserva {
 	char idReserva[20];
@@ -7,9 +8,11 @@ typedef struct reserva {
 	struct reserva* prox;
 } Reserva;
 
+extern int ultimoIdReserva;
+
 int guardarReserva(Reserva* inicio);
 Reserva* lerReserva();
-Reserva* inserirReserva(Reserva* inicio, char idReserv[], char nifClient[], char idMeioEletric[]);
+//Reserva* inserirReserva(Reserva* inicio, char idReserv[], char nifClient[], char idMeioEletric[]);
 void listarReserva(Reserva* inicio);
 int existeidReserva(Reserva* inicio, char* idReserva);
 Reserva* removerReserva(Reserva* inicio, char* idReserv);

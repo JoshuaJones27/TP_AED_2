@@ -75,6 +75,9 @@ void menuCliente(Cliente* inicio, char* nif)
 	{
 		printf("1 - Consultar Saldo\n");
 		printf("2 - Carregar Saldo\n");
+		printf("3 - Alugar Meio\n");
+		printf("4 - Listar por Percentagem Autonomia\n");
+		printf("5 - Listar por Geocodigo\n");
 		printf("0 - Logout\n");
 		printf("Opcao:");
 		scanf("%d", &op);
@@ -108,6 +111,50 @@ void menuCliente(Cliente* inicio, char* nif)
 				printf("Nao foi possivel carregar o saldo!\n");
 			}
 			system("pause");
+			break;
+		}
+		case 3:
+		{
+			char idMeioEletrico[50];
+			int reserva;
+
+			// Read the contents of the file and create the linked list
+			MeioEletrico* inicio = lerMeioEletrico();
+			if (inicio == NULL) {
+				printf("Nao foi possivel ler os meios eletricos!\n");
+				break;
+			}
+
+			printf("Insira o ID do meio eletrico: ");
+			scanf("%s", idMeioEletrico);
+
+			if (existeMeioEletrico(inicio, idMeioEletrico) == 1)
+			{
+				printf("Meio eletrico encontrado!\n");
+				printf("Deseja reservar este meio eletrico? (1-Sim / 0-Nao): ");
+				scanf("%d", &reserva);
+				alterarEstadoMeio(inicio, idMeioEletrico, reserva);
+			}
+			else
+			{
+				printf("Meio eletrico nao encontrado!\n");
+			}
+
+			break;
+		}
+
+		case 4:
+		{
+			MeioEletrico* inicio = lerMeioEletrico();
+			listarMeiosPorCargaBateria(inicio);
+		}
+		case 5:
+		{
+			MeioEletrico* inicio = lerMeioEletrico();
+			char geocodigo[50];
+			printf("Insira o geocodigo a pesquisar: ");
+			scanf("%s", geocodigo);
+			listarMeiosPorGeocodigo(inicio, geocodigo);
 			break;
 		}
 		}

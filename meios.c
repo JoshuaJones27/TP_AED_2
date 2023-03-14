@@ -13,7 +13,7 @@ int guardarMeiosEletricos(MeioEletrico* inicio)
 		MeioEletrico* aux = inicio;
 		while (aux != NULL)
 		{
-			fprintf(fp, "%s;%s;%f;%f;%s\n", aux->tipo, aux->id, aux->carga_bateria, aux->custo_hora, aux->geocodigo);
+			fprintf(fp, "%s;%s;%f;%f;%s;%d\n", aux->tipo, aux->id, aux->carga_bateria, aux->custo_hora, aux->geocodigo, aux->reservado);
 			aux = aux->prox;
 		}
 		fclose(fp);
@@ -29,12 +29,13 @@ int guardarMeiosEletricos(MeioEletrico* inicio)
 MeioEletrico* lerMeioEletrico()
 {
 	FILE* fp;
-
 	char tip[50]; //tipo
-	char i[50]; //id
+	char id[50]; //id
 	float carga_bateri; //carga bateria
 	float custo_hor; //custo por hora
 	char geocodig[50]; //geocodigo
+	int reservad = 0; // initialize to 0
+	MeioEletrico* inicio = NULL; // Initialize to NULL
 	MeioEletrico* aux = NULL;
 
 	fp = fopen("./meios.txt", "r");
@@ -47,34 +48,57 @@ MeioEletrico* lerMeioEletrico()
 	char line[350];
 	while (fgets(line, 350, fp) != NULL)
 	{
-		sscanf(line, "%[^;];%[^;];%f;%f;%[^;]\n", tip, i, &carga_bateri, &custo_hor, geocodig);
-		aux = inserirMeioEletrico(aux, tip, i, carga_bateri, custo_hor, geocodig);
+		sscanf(line, "%[^;];%[^;];%f;%f;%[^;];%d\n", tip, id, &carga_bateri, &custo_hor, geocodig, &reservad);
+		aux = inserirMeioEletrico(aux, tip, atoi(id), carga_bateri, custo_hor, geocodig, reservad);
+		if (inicio == NULL) // If this is the first node, set inicio to it
+			inicio = aux;
 	}
 	fclose(fp);
-	return aux;
+	return inicio;
 }
 
 // Inser��o de um novo registo
-MeioEletrico* inserirMeioEletrico(MeioEletrico* inicio, char tip[], char i[], float carga_bateri, float custo_hor, char geocodig[])
-{
-	if (!existeMeioEletrico(inicio, i))
-	{
-		MeioEletrico* novo = malloc(sizeof(MeioEletrico));
-		if (novo != NULL)
-		{
-			strcpy(novo->tipo, tip);
-			strcpy(novo->id, i);
-			novo->carga_bateria = carga_bateri;
-			novo->custo_hora = custo_hor;
-			strcpy(novo->geocodigo, geocodig);
-			novo->prox = inicio;
-			return novo;
-		}
-		else
-		{
-			return inicio;
-		}
+//MeioEletrico* inserirMeioEletrico(MeioEletrico* inicio, char tip[], char i[], float carga_bateri, float custo_hor, char geocodig[], int reservad)
+//{
+//	if (!existeMeioEletrico(inicio, i))
+//	{
+//		MeioEletrico* novo = malloc(sizeof(MeioEletrico));
+//		if (novo != NULL)
+//		{
+//			strcpy(novo->tipo, tip);
+//			strcpy(novo->id, i);
+//			novo->carga_bateria = carga_bateri;
+//			novo->custo_hora = custo_hor;
+//			strcpy(novo->geocodigo, geocodig);
+//			novo->prox = inicio;
+//			novo->reservado = reservad;
+//			return novo;
+//		}
+//		else
+//		{
+//			return inicio;
+//		}
+//	}
+//}
+
+MeioEletrico* inserirMeioEletrico(MeioEletrico* inicio, char* tipo, int id, float carga_bateria, float custo_hora, char* geocodigo, int reservado) {
+	MeioEletrico* novo = (MeioEletrico*)malloc(sizeof(MeioEletrico));
+	strcpy(novo->tipo, tipo);
+	sprintf(novo->id, "%d", id);
+	novo->carga_bateria = carga_bateria;
+	novo->custo_hora = custo_hora;
+	strcpy(novo->geocodigo, geocodigo);
+	novo->reservado = reservado;
+	novo->prox = NULL; // initialize prox to NULL
+	if (inicio == NULL) {
+		return novo;
 	}
+	MeioEletrico* aux = inicio;
+	while (aux->prox != NULL) {
+		aux = aux->prox;
+	}
+	aux->prox = novo;
+	return inicio;
 }
 
 // listar na consola o conte�do da lista ligada
@@ -82,24 +106,127 @@ void listarMeioEletrico(MeioEletrico* inicio)
 {
 	while (inicio != NULL)
 	{
-		printf("%s %s %f %f %s\n", inicio->tipo, inicio->id, inicio->carga_bateria, inicio->custo_hora, inicio->geocodigo);
+		printf("%s %s %f %f %s %d\n", inicio->tipo, inicio->id, inicio->carga_bateria, inicio->custo_hora, inicio->geocodigo, inicio->reservado);
 		inicio = inicio->prox;
 	}
 }
 
-int existeMeioEletrico(MeioEletrico* inicio, char* id)
+int existeMeioEletrico(MeioEletrico* inicio, char* id) {
+	MeioEletrico* aux = inicio;
+	while (aux != NULL) {
+		if (strcmp(aux->id, id) == 0) {
+			return 1;
+		}
+		aux = aux->prox;
+	}
+	return 0;
+}
+
+void alterarEstadoMeio(MeioEletrico* inicio, char* idMeioEletrico, int reserva)
 {
 	MeioEletrico* aux = inicio;
 	while (aux != NULL)
 	{
-		if (strcmp(aux->id, id) == 0)
+		if (strcmp(aux->id, idMeioEletrico) == 0)
 		{
-			return(1);
+			if (aux->reservado == 1) {
+				printf("O meio eletrico com o ID %s ja esta reservado!\n", idMeioEletrico);
+				return;
+			}
+			else {
+				aux->reservado = 1;
+				printf("O meio eletrico com o ID %s foi reservado com sucesso!\n", idMeioEletrico);
+
+				// Open the file in write mode
+				FILE* fp = fopen("./meios.txt", "w");
+				if (fp == NULL) {
+					printf("Erro ao abrir o ficheiro de meios de transporte\n");
+					return;
+				}
+
+				// Traverse the linked list and write the contents of each node to the file
+				MeioEletrico* temp = inicio;
+				while (temp != NULL) {
+					fprintf(fp, "%s;%s;%.2f;%.2f;%s;%d\n", temp->tipo, temp->id, temp->carga_bateria, temp->custo_hora, temp->geocodigo, temp->reservado);
+					temp = temp->prox;
+				}
+
+				// Close the file
+				fclose(fp);
+
+				return;
+			}
 		}
 		aux = aux->prox;
 	}
-	free(aux);
-	return(0);
+	printf("Meio eletrico nao encontrado!\n");
+}
+
+void listarMeiosPorCargaBateria(MeioEletrico* inicio) {
+	// First, we need to count the number of meios
+	int count = 0;
+	MeioEletrico* aux = inicio;
+	while (aux != NULL) {
+		count++;
+		aux = aux->prox;
+	}
+
+	// Then, we create an array with the meios and their carga_bateria values
+	float* carga_bateria_array = (float*)malloc(sizeof(float) * count);
+	MeioEletrico** meio_array = (MeioEletrico**)malloc(sizeof(MeioEletrico*) * count);
+	aux = inicio;
+	int i = 0;
+	while (aux != NULL) {
+		meio_array[i] = aux;
+		carga_bateria_array[i] = aux->carga_bateria;
+		aux = aux->prox;
+		i++;
+	}
+
+	// We can then sort the arrays by carga_bateria
+	for (int i = 0; i < count - 1; i++) {
+		for (int j = 0; j < count - i - 1; j++) {
+			if (carga_bateria_array[j] < carga_bateria_array[j + 1]) {
+				float temp_bateria = carga_bateria_array[j];
+				carga_bateria_array[j] = carga_bateria_array[j + 1];
+				carga_bateria_array[j + 1] = temp_bateria;
+
+				MeioEletrico* temp_meio = meio_array[j];
+				meio_array[j] = meio_array[j + 1];
+				meio_array[j + 1] = temp_meio;
+			}
+		}
+	}
+
+	// Finally, we print the sorted array
+	printf("Lista de meios eletricos por carga de bateria (de maior para menor):\n");
+	for (int i = 0; i < count; i++) {
+		printf("Tipo: %s | ID: %s | Carga de bateria: %.2f | Custo por hora: %.2f | Geocodigo: %s | Reservado: %d\n",
+			meio_array[i]->tipo, meio_array[i]->id, meio_array[i]->carga_bateria, meio_array[i]->custo_hora, meio_array[i]->geocodigo, meio_array[i]->reservado);
+	}
+
+	// We need to free the allocated memory
+	free(carga_bateria_array);
+	free(meio_array);
+}
+
+void listarMeiosPorGeocodigo(MeioEletrico* inicio, char* geocodigo) {
+	MeioEletrico* aux = inicio;
+	int found = 0;
+
+	printf("Lista de meios eletricos com o geocodigo %s:\n", geocodigo);
+	while (aux != NULL) {
+		if (strcmp(aux->geocodigo, geocodigo) == 0) {
+			printf("Tipo: %s | ID: %d | Carga de bateria: %.2f | Custo por hora: %.2f | Geocodigo: %s | Reservado: %d\n",
+				aux->tipo, aux->id, aux->carga_bateria, aux->custo_hora, aux->geocodigo, aux->reservado);
+			found = 1;
+		}
+		aux = aux->prox;
+	}
+
+	if (!found) {
+		printf("Nao foram encontrados meios eletricos com o geocodigo %s.\n", geocodigo);
+	}
 }
 
 // remover um cliente a partir do seu ID
@@ -160,6 +287,10 @@ void editarMeioEletrico(MeioEletrico* inicio, char* id)
 			printf("Digite o novo geocodigo: ");
 			fgets(atual->geocodigo, 50, stdin);
 			strtok(atual->geocodigo, "\n");
+
+			printf("Digite o estado de reserva: ");
+			scanf("%d", &atual->reservado);
+			getchar();
 
 			printf("Meio de transporte editado com sucesso.\n");
 			return;
