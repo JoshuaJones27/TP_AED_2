@@ -25,48 +25,6 @@ int menu()
 
 void menuCliente();
 
-//void menuLogin()
-//{
-//	Cliente* inicio = NULL;
-//	inicio = lerCliente();
-//	int opcao;
-//	char nomeUtilizador[100], palavraPasse[30];
-//	char* nif; // Declare a variable to hold the nif value
-//	system("cls");
-//	printf("Menu Login\n");
-//	printf("Pressione 1 para Cliente\n");
-//	printf("Pressione 2 para Gestor\n");
-//	printf("Opcao:");
-//	scanf("%d", &opcao);
-//	switch (opcao)
-//	{
-//	case 1:
-//		printf("Insira os seus dados:\n");
-//		printf("Nome utilizador: ");
-//		scanf("%s", nomeUtilizador);
-//		printf("Password: ");
-//		scanf("%s", palavraPasse);
-//		nif = loginCliente(inicio, nomeUtilizador, palavraPasse); // Assign the returned nif to the variable
-//		if (nif != NULL)
-//		{
-//			printf("Login efetuado com sucesso!\n");
-//			system("pause");
-//			system("cls");
-//			menuCliente(inicio, nif); // Pass the nif to the menuCliente function
-//		}
-//		else
-//		{
-//			printf("Dados incorretos!\n");
-//			system("pause");
-//		}
-//		break;
-//	case 2:
-//
-//	default:
-//		break;
-//	}
-//}
-
 void menuLogin()
 {
 	Cliente* inicio = NULL;
@@ -139,7 +97,7 @@ void menuCliente(Cliente* inicio, char* nif)
 		{
 		case 1:
 		{
-			printf("========== Consultar Saldo ==========");
+			printf("========== Consultar Saldo ==========\n");
 			float saldo = consultarSaldo(inicio, nif);
 			if (saldo >= 0)
 			{
@@ -155,7 +113,7 @@ void menuCliente(Cliente* inicio, char* nif)
 		}
 		case 2:
 		{
-			printf("========== Carregar Saldo ==========");
+			printf("========== Carregar Saldo ==========\n");
 			float valor;
 			printf("Insira o valor a carregar: ");
 			scanf("%f", &valor);
@@ -173,7 +131,7 @@ void menuCliente(Cliente* inicio, char* nif)
 		}
 		case 3:
 		{
-			printf("========== Alugar Meio ==========");
+			printf("========== Alugar Meio ==========\n");
 			char idMeioEletrico[50];
 			int reserva;
 
@@ -207,7 +165,7 @@ void menuCliente(Cliente* inicio, char* nif)
 
 		case 4:
 		{
-			printf("========== Listar por Percentagem Autonomia ==========");
+			printf("========== Listar por Percentagem Autonomia ==========\n");
 			MeioEletrico* inicio = lerMeioEletrico();
 			listarMeiosPorCargaBateria(inicio);
 			system("pause");
@@ -216,7 +174,7 @@ void menuCliente(Cliente* inicio, char* nif)
 		}
 		case 5:
 		{
-			printf("========== Listar por Geocodigo ==========");
+			printf("========== Listar por Geocodigo ==========\n");
 			MeioEletrico* inicio = lerMeioEletrico();
 			char geocodigo[50];
 			printf("Insira o geocodigo a pesquisar: ");

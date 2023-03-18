@@ -171,44 +171,171 @@ void listarMeiosPorCargaBateria(MeioEletrico* inicio) {
 		aux = aux->prox;
 	}
 
-	// Then, we create an array with the meios and their carga_bateria values
-	float* carga_bateria_array = (float*)malloc(sizeof(float) * count);
-	MeioEletrico** meio_array = (MeioEletrico**)malloc(sizeof(MeioEletrico*) * count);
+	// Then, we create a linked list with the meios and their carga_bateria values
+	MeioEletrico* meio_lista = NULL;
 	aux = inicio;
-	int i = 0;
 	while (aux != NULL) {
-		meio_array[i] = aux;
-		carga_bateria_array[i] = aux->carga_bateria;
+		MeioEletrico* novo_meio = (MeioEletrico*)malloc(sizeof(MeioEletrico));
+		strcpy(novo_meio->tipo, aux->tipo);
+		strcpy(novo_meio->id, aux->id);
+		novo_meio->carga_bateria = aux->carga_bateria;
+		novo_meio->custo_hora = aux->custo_hora;
+		strcpy(novo_meio->geocodigo, aux->geocodigo);
+		novo_meio->reservado = aux->reservado;
+		novo_meio->prox = meio_lista;
+		meio_lista = novo_meio;
 		aux = aux->prox;
-		i++;
 	}
 
-	// We can then sort the arrays by carga_bateria
+	// We can then sort the linked list by carga_bateria using a bubble sort algorithm
 	for (int i = 0; i < count - 1; i++) {
+		MeioEletrico* atual = meio_lista;
+		MeioEletrico* proximo = meio_lista->prox;
 		for (int j = 0; j < count - i - 1; j++) {
-			if (carga_bateria_array[j] < carga_bateria_array[j + 1]) {
-				float temp_bateria = carga_bateria_array[j];
-				carga_bateria_array[j] = carga_bateria_array[j + 1];
-				carga_bateria_array[j + 1] = temp_bateria;
+			if (atual->carga_bateria < proximo->carga_bateria) {
+				// Swap carga_bateria values
+				float temp_bateria = atual->carga_bateria;
+				atual->carga_bateria = proximo->carga_bateria;
+				proximo->carga_bateria = temp_bateria;
 
-				MeioEletrico* temp_meio = meio_array[j];
-				meio_array[j] = meio_array[j + 1];
-				meio_array[j + 1] = temp_meio;
+				// Swap the MeioEletrico nodes
+				MeioEletrico* temp_meio = atual;
+				atual = proximo;
+				proximo = temp_meio;
 			}
+			atual = atual->prox;
+			proximo = proximo->prox;
 		}
 	}
 
-	// Finally, we print the sorted array
+	// Finally, we print the sorted linked list in descending order
 	printf("Lista de meios eletricos por carga de bateria (de maior para menor):\n");
-	for (int i = 0; i < count; i++) {
+	aux = meio_lista;
+	while (aux != NULL) {
 		printf("Tipo: %s | ID: %s | Carga de bateria: %.2f | Custo por hora: %.2f | Geocodigo: %s | Reservado: %d\n",
-			meio_array[i]->tipo, meio_array[i]->id, meio_array[i]->carga_bateria, meio_array[i]->custo_hora, meio_array[i]->geocodigo, meio_array[i]->reservado);
+			aux->tipo, aux->id, aux->carga_bateria, aux->custo_hora, aux->geocodigo, aux->reservado);
+		aux = aux->prox;
 	}
 
 	// We need to free the allocated memory
-	free(carga_bateria_array);
-	free(meio_array);
+	aux = meio_lista;
+	while (aux != NULL) {
+		MeioEletrico* temp = aux->prox;
+		free(aux);
+		aux = temp;
+	}
 }
+
+//void listarMeiosPorCargaBateria(MeioEletrico* inicio) {
+//	// First, we need to count the number of meios
+//	int count = 0;
+//	MeioEletrico* aux = inicio;
+//	while (aux != NULL) {
+//		count++;
+//		aux = aux->prox;
+//	}
+//
+//	// Then, we create a linked list with the meios and their carga_bateria values
+//	MeioEletrico* meio_lista = NULL;
+//	aux = inicio;
+//	while (aux != NULL) {
+//		MeioEletrico* novo_meio = (MeioEletrico*)malloc(sizeof(MeioEletrico));
+//		strcpy(novo_meio->tipo, aux->tipo);
+//		strcpy(novo_meio->id, aux->id);
+//		novo_meio->carga_bateria = aux->carga_bateria;
+//		novo_meio->custo_hora = aux->custo_hora;
+//		strcpy(novo_meio->geocodigo, aux->geocodigo);
+//		novo_meio->reservado = aux->reservado;
+//		novo_meio->prox = meio_lista;
+//		meio_lista = novo_meio;
+//		aux = aux->prox;
+//	}
+//
+//	// We can then sort the linked list by carga_bateria using a bubble sort algorithm
+//	for (int i = 0; i < count - 1; i++) {
+//		MeioEletrico* atual = meio_lista;
+//		MeioEletrico* proximo = meio_lista->prox;
+//		for (int j = 0; j < count - i - 1; j++) {
+//			if (atual->carga_bateria < proximo->carga_bateria) {
+//				float temp_bateria = atual->carga_bateria;
+//				atual->carga_bateria = proximo->carga_bateria;
+//				proximo->carga_bateria = temp_bateria;
+//
+//				// Swap the MeioEletrico nodes
+//				MeioEletrico* temp_meio = atual;
+//				atual = proximo;
+//				proximo = temp_meio;
+//			}
+//			atual = atual->prox;
+//			proximo = proximo->prox;
+//		}
+//	}
+//
+//	// Finally, we print the sorted linked list in reverse order
+//	printf("Lista de meios eletricos por carga de bateria (de maior para menor):\n");
+//	aux = meio_lista;
+//	while (aux != NULL) {
+//		printf("Tipo: %s | ID: %s | Carga de bateria: %.2f | Custo por hora: %.2f | Geocodigo: %s | Reservado: %d\n",
+//			aux->tipo, aux->id, aux->carga_bateria, aux->custo_hora, aux->geocodigo, aux->reservado);
+//		aux = aux->prox;
+//	}
+//
+//	// We need to free the allocated memory
+//	aux = meio_lista;
+//	while (aux != NULL) {
+//		MeioEletrico* temp = aux->prox;
+//		free(aux);
+//		aux = temp;
+//	}
+//}
+
+//void listarMeiosPorCargaBateria(MeioEletrico* inicio) {
+//	// First, we need to count the number of meios
+//	int count = 0;
+//	MeioEletrico* aux = inicio;
+//	while (aux != NULL) {
+//		count++;
+//		aux = aux->prox;
+//	}
+//
+//	// Then, we create an array with the meios and their carga_bateria values
+//	float* carga_bateria_array = (float*)malloc(sizeof(float) * count);
+//	MeioEletrico** meio_array = (MeioEletrico**)malloc(sizeof(MeioEletrico*) * count);
+//	aux = inicio;
+//	int i = 0;
+//	while (aux != NULL) {
+//		meio_array[i] = aux;
+//		carga_bateria_array[i] = aux->carga_bateria;
+//		aux = aux->prox;
+//		i++;
+//	}
+//
+//	// We can then sort the arrays by carga_bateria
+//	for (int i = 0; i < count - 1; i++) {
+//		for (int j = 0; j < count - i - 1; j++) {
+//			if (carga_bateria_array[j] < carga_bateria_array[j + 1]) {
+//				float temp_bateria = carga_bateria_array[j];
+//				carga_bateria_array[j] = carga_bateria_array[j + 1];
+//				carga_bateria_array[j + 1] = temp_bateria;
+//
+//				MeioEletrico* temp_meio = meio_array[j];
+//				meio_array[j] = meio_array[j + 1];
+//				meio_array[j + 1] = temp_meio;
+//			}
+//		}
+//	}
+//
+//	// Finally, we print the sorted array
+//	printf("Lista de meios eletricos por carga de bateria (de maior para menor):\n");
+//	for (int i = 0; i < count; i++) {
+//		printf("Tipo: %s | ID: %s | Carga de bateria: %.2f | Custo por hora: %.2f | Geocodigo: %s | Reservado: %d\n",
+//			meio_array[i]->tipo, meio_array[i]->id, meio_array[i]->carga_bateria, meio_array[i]->custo_hora, meio_array[i]->geocodigo, meio_array[i]->reservado);
+//	}
+//
+//	// We need to free the allocated memory
+//	free(carga_bateria_array);
+//	free(meio_array);
+//}
 
 void listarMeiosPorGeocodigo(MeioEletrico* inicio, char* geocodigo) {
 	MeioEletrico* aux = inicio;
