@@ -234,7 +234,7 @@ int menuGestor(Gestor* inicioGestor, char* id)
 		printf("3 - Editar Cliente (NAO FUNCIONA DIREITO)\n");
 		printf("4 - Editar Meio Eletrico (NAO FUNCIONA DIREITO)\n");
 		printf("5 - Eliminar Cliente\n");
-		printf("6 - Eliminar Meio Eletrico\n");
+		printf("6 - Eliminar Meio Eletrico(NAO FUNCIONA DIREITO)\n");
 		printf("7 - Listar Clientes\n");
 		printf("8 - Listar Meios Eletricos\n");
 		printf("0 - Logout\n");
@@ -382,15 +382,15 @@ int menuGestor(Gestor* inicioGestor, char* id)
 		{
 			printf("========== Remover Meio Eletrico ==========\n");
 
-			int id[50];
+			char idMeioEletrico[50];
 
 			MeioEletrico* inicio = lerMeioEletrico();
 
 			printf("Insira o ID do meio eletrico a remover: ");
 
-			scanf("%d", &id);
+			scanf("%s", idMeioEletrico);
 
-			MeioEletrico* novoInicio = removerMeioEletrico(inicio, id);
+			MeioEletrico* novoInicio = removerMeioEletrico(inicio, idMeioEletrico);
 
 			if (novoInicio != NULL) // Se houve mudança na lista
 			{
@@ -409,6 +409,7 @@ int menuGestor(Gestor* inicioGestor, char* id)
 
 			break;
 		}
+
 		case 7:
 		{
 			printf("========== Listar Clientes ==========\n");

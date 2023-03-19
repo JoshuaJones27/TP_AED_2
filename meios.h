@@ -14,7 +14,7 @@ typedef struct meio_eletrico {
 MeioEletrico* inserirMeioEletrico(MeioEletrico* inicio, char tip[], int i[], float carga_bateri, float custo_hor, char geocodig[], int reservado);
 void listarMeioEletrico(MeioEletrico* inicio);
 int existeMeioEletrico(MeioEletrico* inicio, char* tipo);
-MeioEletrico* removerMeioEletrico(MeioEletrico* inicio, int i);
+MeioEletrico* removerMeioEletrico(MeioEletrico* inicio, char idMeioEletrico);
 int guardarMeiosEletricos(MeioEletrico* inicio);
 MeioEletrico* lerMeioEletrico();
 void editarMeioEletrico(MeioEletrico* inicio, char* id);

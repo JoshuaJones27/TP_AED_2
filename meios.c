@@ -206,7 +206,7 @@ void listarMeiosPorGeocodigo(MeioEletrico* inicio, char* geocodigo) {
 }
 
 // remover um cliente a partir do seu ID
-MeioEletrico* removerMeioEletrico(MeioEletrico* inicio, int i[])
+MeioEletrico* removerMeioEletrico(MeioEletrico* inicio, char idMeioEletrico)
 {
 	MeioEletrico* anterior = NULL, * atual = inicio, * aux;
 
@@ -214,7 +214,7 @@ MeioEletrico* removerMeioEletrico(MeioEletrico* inicio, int i[])
 	{
 		return NULL;
 	}
-	else if (atual->id == i)
+	else if (atual->id == idMeioEletrico)
 	{
 		aux = atual->prox;
 		free(atual);
@@ -222,7 +222,7 @@ MeioEletrico* removerMeioEletrico(MeioEletrico* inicio, int i[])
 	}
 	else
 	{
-		while ((atual != NULL) && (atual->id != i))
+		while ((atual != NULL) && (atual->id != idMeioEletrico))
 		{
 			anterior = atual;
 			atual = atual->prox;
@@ -239,6 +239,7 @@ MeioEletrico* removerMeioEletrico(MeioEletrico* inicio, int i[])
 		}
 	}
 }
+
 void editarMeioEletrico(MeioEletrico* inicio, char* id)
 {
 	MeioEletrico* atual = inicio;
@@ -286,7 +287,7 @@ MeioEletrico* criarMeioEletrico(MeioEletrico* inicio, char* tipo, float carga_ba
 	novo->reservado = reservado;
 	novo->prox = NULL; // initialize prox to NULL
 	if (inicio == NULL) {
-		sprintf(novo->id, "%d", 1); // if the list is empty, set the id to 1
+		novo->id[0] = 1; // if the list is empty, set the first element of the id array to 1
 		return novo;
 	}
 	MeioEletrico* aux = inicio;
@@ -294,7 +295,7 @@ MeioEletrico* criarMeioEletrico(MeioEletrico* inicio, char* tipo, float carga_ba
 		aux = aux->prox;
 	}
 	int last_id = atoi(aux->id);
-	sprintf(novo->id, "%d", last_id + 1); // set the new id to the last id + 1
+	novo->id[0] = last_id + 1; // set the first element of the id array to the last id + 1
 	aux->prox = novo;
 	return inicio;
 }
