@@ -11,13 +11,14 @@ typedef struct meio_eletrico {
 	struct meio_eletrico* prox;
 } MeioEletrico;
 
-MeioEletrico* inserirMeioEletrico(MeioEletrico* inicio, char tip[], char i[], float carga_bateri, float custo_hor, char geocodig[], int reservado);
+MeioEletrico* inserirMeioEletrico(MeioEletrico* inicio, char tip[], int i[], float carga_bateri, float custo_hor, char geocodig[], int reservado);
 void listarMeioEletrico(MeioEletrico* inicio);
 int existeMeioEletrico(MeioEletrico* inicio, char* tipo);
-MeioEletrico* removerMeioEletrico(MeioEletrico* inicio, char* i);
+MeioEletrico* removerMeioEletrico(MeioEletrico* inicio, int i);
 int guardarMeiosEletricos(MeioEletrico* inicio);
 MeioEletrico* lerMeioEletrico();
 void editarMeioEletrico(MeioEletrico* inicio, char* id);
 void alterarEstadoMeio(MeioEletrico* inicio, char* idMeioEletrico, int reserva);
 void listarMeiosPorCargaBateria(MeioEletrico* inicio);
 void listarMeiosPorGeocodigo(MeioEletrico* inicio, char* geocodigo);
+MeioEletrico* criarMeioEletrico(MeioEletrico* inicio, char* tipo, float carga_bateria, float custo_hora, char* geocodigo, int reservado);

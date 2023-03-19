@@ -29,9 +29,14 @@ void menuLogin()
 {
 	Cliente* inicio = NULL;
 	inicio = lerCliente();
+	Gestor* inicioGestor = NULL;
+	inicioGestor = lerGestor();
+	MeioEletrico* inicioMeioEletrico = NULL;
+	inicioMeioEletrico = lerMeioEletrico();
 	int opcao;
-	char nomeUtilizador[100], palavraPasse[30];
+	char nomeUtilizador[100], palavraPasse[30], email[100];
 	char* nif = NULL; // Initialize the nif variable to NULL
+	char* id = NULL;
 	system("cls");
 	printf("Menu Login\n");
 	printf("Pressione 1 para Cliente\n");
@@ -71,6 +76,35 @@ void menuLogin()
 		}
 		break;
 	case 2:
+		while (id == NULL) // Add a loop to continue until the client successfully logs in or chooses to exit
+		{
+			printf("Insira os seus dados:\n");
+			printf("Email Gestor: ");
+			scanf("%s", email);
+			printf("Password: ");
+			scanf("%s", palavraPasse);
+			id = loginGestor(inicioGestor, email, palavraPasse);
+			if (id != NULL)
+			{
+				printf("Login efetuado com sucesso!\n");
+				system("pause");
+				system("cls");
+				menuGestor(inicioGestor, id);
+			}
+			else
+			{
+				printf("Dados incorretos!\n");
+				printf("Pressione 1 para tentar novamente ou 2 para sair.\n");
+				scanf("%d", &opcao);
+				if (opcao == 2)
+				{
+					system("cls");
+					break; // Exit the loop if the client chooses to exit
+				}
+				system("cls");
+			}
+		}
+		break;
 
 	default:
 		break;
@@ -188,8 +222,215 @@ void menuCliente(Cliente* inicio, char* nif)
 	} while (op != 0);
 }
 
-int menuGestor()
+int menuGestor(Gestor* inicioGestor, char* id)
 {
+	printf("Menu Gestor\n");
+
+	int op;
+	do
+	{
+		printf("1 - Criar Cliente\n");
+		printf("2 - Criar Meio Eletrico\n");
+		printf("3 - Editar Cliente (NAO FUNCIONA DIREITO)\n");
+		printf("4 - Editar Meio Eletrico (NAO FUNCIONA DIREITO)\n");
+		printf("5 - Eliminar Cliente\n");
+		printf("6 - Eliminar Meio Eletrico\n");
+		printf("7 - Listar Clientes\n");
+		printf("8 - Listar Meios Eletricos\n");
+		printf("0 - Logout\n");
+		printf("Opcao:");
+		scanf("%d", &op);
+		system("cls");
+
+		switch (op)
+		{
+		case 1:
+		{
+			printf("========== Criar Cliente ==========\n");
+			Cliente* inicio = NULL;
+			char nif[20], nome[100], username[100], password[30], morada[200];
+			float saldo;
+
+			printf("NIF: ");
+			scanf("%s", nif);
+			printf("Nome: ");
+			scanf("%s", nome);
+			printf("Nome de utilizador: ");
+			scanf("%s", username);
+			printf("Senha: ");
+			scanf("%s", password);
+			printf("Morada: ");
+			scanf("%s", morada);
+			printf("Saldo: ");
+			scanf("%f", &saldo);
+
+			inicio = inserirCliente(inicio, nif, nome, username, password, morada, saldo);
+
+			if (guardarClientes(inicio))
+			{
+				printf("Cliente guardado com sucesso.\n");
+				system("pause");
+				system("cls");
+			}
+			else
+			{
+				printf("Erro ao criar o cliente.\n");
+				system("pause");
+				system("cls");
+			}
+			break;
+		}
+		case 2:
+		{
+			printf("========== Criar Meio Eletrico ==========\n");
+
+			MeioEletrico* inicio = NULL;
+			char tipo[50];
+			float carga_bateria = 100;
+			float custo_hora;
+			char geocodigo[50];
+			int reservado = 0;
+
+			printf("Tipo: ");
+			scanf("%s", tipo);
+
+			printf("Custo por Hora: ");
+			scanf("%f", &custo_hora);
+
+			printf("Geocódigo: ");
+			scanf("%s", geocodigo);
+
+			inicio = criarMeioEletrico(inicio, tipo, carga_bateria, custo_hora, geocodigo, reservado);
+
+			if (guardarMeiosEletricos(inicio)) {
+				printf("Meio eletrico criado e guardado com sucesso.\n");
+				system("pause");
+				system("cls");
+			}
+			else {
+				printf("Erro ao guardar meio eletrico.\n");
+				system("pause");
+				system("cls");
+			}
+			break;
+		}
+		case 3:
+		{
+			printf("========== Editar Cliente ==========\n");
+
+			char nifCliente[20];
+
+			Cliente* inicio = lerCliente();
+
+			printf("Insira o NIF do cliente a editar: ");
+
+			scanf("%s", nifCliente);
+
+			if (existeCliente(inicio, nifCliente) == 1)
+			{
+				printf("Cliente encontrado!\n");
+				editarCliente(inicio, nifCliente);
+				system("pause");
+				system("cls");
+			}
+			else
+			{
+				printf("Cliente nao encontrado!\n");
+				system("pause");
+				system("cls");
+			}
+			break;
+		}
+		case 4:
+		{
+			printf("========== Editar Meio Eletrico ==========\n");
+		}
+
+		case 5:
+		{
+			printf("========== Remover Cliente ==========\n");
+
+			char nifCliente[20];
+
+			Cliente* inicio = lerCliente();
+
+			printf("Insira o NIF do cliente a remover: ");
+
+			scanf("%s", nifCliente);
+
+			Cliente* novoInicio = removerCliente(inicio, nifCliente);
+
+			if (novoInicio != NULL) // Se houve mudança na lista
+			{
+				printf("Cliente encontrado!\n");
+				guardarClientesAoEliminar(novoInicio);
+				printf("Cliente removido com sucesso.\n");
+				system("pause");
+				system("cls");
+			}
+			else
+			{
+				printf("Cliente nao encontrado!\n");
+				system("pause");
+				system("cls");
+			}
+
+			break;
+		}
+
+		case 6:
+		{
+			printf("========== Remover Meio Eletrico ==========\n");
+
+			int id[50];
+
+			MeioEletrico* inicio = lerMeioEletrico();
+
+			printf("Insira o ID do meio eletrico a remover: ");
+
+			scanf("%d", &id);
+
+			MeioEletrico* novoInicio = removerMeioEletrico(inicio, id);
+
+			if (novoInicio != NULL) // Se houve mudança na lista
+			{
+				printf("Meio eletrico encontrado!\n");
+				guardarMeiosEletricos(novoInicio);
+				printf("Meio eletrico removido com sucesso.\n");
+				system("pause");
+				system("cls");
+			}
+			else
+			{
+				printf("Meio eletrico nao encontrado!\n");
+				system("pause");
+				system("cls");
+			}
+
+			break;
+		}
+		case 7:
+		{
+			printf("========== Listar Clientes ==========\n");
+			Cliente* inicio = lerCliente();
+			listarCliente(inicio);
+			system("pause");
+			system("cls");
+			break;
+		}
+		case 8:
+		{
+			printf("========== Listar Meio Eletrico ==========\n");
+			MeioEletrico* inicio = lerMeioEletrico();
+			listarMeioEletrico(inicio);
+			system("pause");
+			system("cls");
+			break;
+		}
+		default:
+			break;
+		}
+	} while (op != 0);
 }
 
 int main()

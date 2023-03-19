@@ -8,6 +8,39 @@ int guardarClientes(Cliente* inicio)
 {
 	// Declara e inicializa o ponteiro de arquivo fp com a abertura do arquivo "clientes.txt" para escrita
 	FILE* fp;
+	fp = fopen("./clientes.txt", "a");
+
+	// Verifica se o arquivo foi aberto corretamente
+	if (fp != NULL)
+	{
+		// Declara um ponteiro auxiliar que aponta para o início da lista de clientes
+		Cliente* aux = inicio;
+
+		// Percorre a lista de clientes e grava as informações de cada cliente no arquivo de texto
+		while (aux != NULL)
+		{
+			fprintf(fp, "%s;%s;%s;%s;%s;%.2f\n", aux->nif, aux->nome, aux->username, aux->password, aux->morada, aux->saldo);
+			aux = aux->prox;
+		}
+
+		// Fecha o arquivo e libera a memória do ponteiro auxiliar
+		fclose(fp);
+		free(aux);
+
+		// Retorna 1 para indicar que a operação foi bem-sucedida
+		return(1);
+	}
+	else
+	{
+		// Retorna 0 para indicar que a operação falhou
+		return(0);
+	}
+}
+
+int guardarClientesAoEliminar(Cliente* inicio)
+{
+	// Declara e inicializa o ponteiro de arquivo fp com a abertura do arquivo "clientes.txt" para escrita
+	FILE* fp;
 	fp = fopen("./clientes.txt", "w");
 
 	// Verifica se o arquivo foi aberto corretamente
@@ -19,7 +52,7 @@ int guardarClientes(Cliente* inicio)
 		// Percorre a lista de clientes e grava as informações de cada cliente no arquivo de texto
 		while (aux != NULL)
 		{
-			fprintf(fp, "%s;%s;%s;%s;%s;%f\n", aux->nif, aux->nome, aux->username, aux->password, aux->morada, aux->saldo);
+			fprintf(fp, "%s;%s;%s;%s;%s;%.2f\n", aux->nif, aux->nome, aux->username, aux->password, aux->morada, aux->saldo);
 			aux = aux->prox;
 		}
 
@@ -67,7 +100,7 @@ Cliente* lerCliente()
 	char line[350];
 	while (fgets(line, 350, fp) != NULL)
 	{
-		sscanf(line, "%[^;];%[^;];%[^;];%[^;];%[^;];%f\n", n, nom, userNam, pass, mor, &sal);
+		sscanf(line, "%[^;];%[^;];%[^;];%[^;];%[^;];%.2f\n", n, nom, userNam, pass, mor, &sal);
 		aux = inserirCliente(aux, n, nom, userNam, pass, mor, sal);
 	}
 
@@ -110,6 +143,49 @@ Cliente* inserirCliente(Cliente* inicio, char n[], char nom[], char userNam[], c
 	}
 }
 
+Cliente* novoCliente(Cliente* inicio, char n[], char nom[], char userNam[], char pass[], char mor[], float sal)
+{
+	// Verifica se o cliente já existe
+	if (!existeCliente(inicio, n))
+	{
+		// Aloca espaço para um novo cliente
+		Cliente* novo = malloc(sizeof(Cliente));
+
+		// Verifica se a alocação foi bem-sucedida
+		if (novo != NULL)
+		{
+			// Pede ao usuário para inserir os dados do novo cliente
+			printf("========== Inserir Novo Cliente ==========\n");
+			printf("NIF: ");
+			scanf("%s", novo->nif);
+			printf("Nome: ");
+			scanf("%s", novo->nome);
+			printf("Nome de utilizador: ");
+			scanf("%s", novo->username);
+			printf("Senha: ");
+			scanf("%s", novo->password);
+			printf("Morada: ");
+			scanf("%s", novo->morada);
+			printf("Saldo: ");
+			scanf("%f", &novo->saldo);
+
+			// Insere o novo cliente no início da lista
+			novo->prox = inicio;
+
+			// Salva a lista atualizada no arquivo "clientes.txt"
+			guardarClientes(novo);
+
+			// Retorna o novo início da lista
+			return novo;
+		}
+		else
+		{
+			// Se a alocação falhar, retorna o início da lista original
+			return inicio;
+		}
+	}
+}
+
 // listar na consola o conteúdo da lista ligada
 void listarCliente(Cliente* inicio)
 {
@@ -117,7 +193,7 @@ void listarCliente(Cliente* inicio)
 	while (inicio != NULL)
 	{
 		// Imprime os valores do cliente
-		printf("%s %s %s %s %s %f\n", inicio->nif, inicio->nome, inicio->username, inicio->password, inicio->morada, inicio->saldo);
+		printf("%s %s %s %s %s %.2f\n", inicio->nif, inicio->nome, inicio->username, inicio->password, inicio->morada, inicio->saldo);
 
 		// Avança para o próximo cliente
 		inicio = inicio->prox;
@@ -156,7 +232,6 @@ char* loginCliente(Cliente* inicio, char* nomeUtilizador, char* palavraPasse)
 	return NULL;
 }
 
-// remover um cliente a partir do seu NIF
 Cliente* removerCliente(Cliente* inicio, char* n)
 {
 	Cliente* anterior = NULL, * atual = inicio, * aux;
@@ -205,13 +280,13 @@ void editarCliente(Cliente* inicio, char* nif)
 			fgets(atual->nome, 100, stdin); // lê o novo nome
 			strtok(atual->nome, "\n"); // remove o caractere de nova linha adicionado pelo fgets
 
-			printf("Editar cliente: %s\n", atual->username);
-			printf("Digite o novo nome: ");
+			printf("Nome utilizador atual: %s\n", atual->username);
+			printf("Digite o novo nome de utilizador: ");
 			fgets(atual->username, 100, stdin); // lê o novo nome
 			strtok(atual->username, "\n"); // remove o caractere de nova linha adicionado pelo fgets
 
-			printf("Editar cliente: %s\n", atual->password);
-			printf("Digite o novo nome: ");
+			printf("Palavra passe atual: %s\n", atual->password);
+			printf("Digite a nova palavra passe: ");
 			fgets(atual->password, 100, stdin); // lê o novo nome
 			strtok(atual->password, "\n"); // remove o caractere de nova linha adicionado pelo fgets
 
@@ -224,6 +299,7 @@ void editarCliente(Cliente* inicio, char* nif)
 			getchar(); // remove o caractere de nova linha deixado pelo scanf
 
 			printf("Cliente editado com sucesso.\n");
+			guardarClientes(inicio); // guarda a lista de clientes no ficheiro
 			return;
 		}
 		atual = atual->prox; // avança para o próximo cliente na lista

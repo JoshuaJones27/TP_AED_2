@@ -30,7 +30,7 @@ Gestor* lerGestor()
 {
 	FILE* fp;
 
-	int i; //id
+	char i[50]; //id
 	char nom[100]; //Nome
 	char emai[100]; //email
 	char pass[100]; //password
@@ -46,7 +46,7 @@ Gestor* lerGestor()
 	char line[350];
 	while (fgets(line, 350, fp) != NULL)
 	{
-		sscanf(line, "%d;%[^\n]s;%[^\n]s;%[^\n]s\n", &i, nom, emai, pass);
+		sscanf(line, "%[^;];%[^;];%[^;];%[^;];%[^;];%f\n", i, nom, emai, pass);
 		aux = inserirGestor(aux, i, nom, emai, pass);
 	}
 
@@ -54,8 +54,24 @@ Gestor* lerGestor()
 	return aux;
 }
 
+char* loginGestor(Gestor* inicio, char* email, char* palavraPasse)
+{
+	Gestor* aux = inicio;
+	while (aux != NULL)
+	{
+		if (strcmp(aux->email, email) == 0 && strcmp(aux->password, palavraPasse) == 0)
+		{
+			// If the username and password match, return the nif
+			return aux->id;
+		}
+		aux = aux->prox;
+	}
+	// If no match is found, return NULL
+	return NULL;
+}
+
 //Inser��o de um novo registo
-Gestor* inserirGestor(Gestor* inicio, int i, char nom[], char emai[], char pass[])
+Gestor* inserirGestor(Gestor* inicio, char i[], char nom[], char emai[], char pass[])
 {
 	if (!existeGestor(inicio, i))
 	{
