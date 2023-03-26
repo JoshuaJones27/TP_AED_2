@@ -22,3 +22,4 @@ float consultarSaldo(Cliente* inicio, char* nif);
 float carregarSaldo(Cliente* inicio, char* nif, float valor);
 Cliente* novoCliente(Cliente* inicio, char n[], char nom[], char userNam[], char pass[], char mor[], float sal);
 int guardarClientesAoEliminar(Cliente* inicio);
+int guardarClientesGestor(Cliente* inicio);

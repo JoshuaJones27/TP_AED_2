@@ -8,6 +8,39 @@ int guardarClientes(Cliente* inicio)
 {
 	// Declara e inicializa o ponteiro de arquivo fp com a abertura do arquivo "clientes.txt" para escrita
 	FILE* fp;
+	fp = fopen("./clientes.txt", "w");
+
+	// Verifica se o arquivo foi aberto corretamente
+	if (fp != NULL)
+	{
+		// Declara um ponteiro auxiliar que aponta para o início da lista de clientes
+		Cliente* aux = inicio;
+
+		// Percorre a lista de clientes e grava as informações de cada cliente no arquivo de texto
+		while (aux != NULL)
+		{
+			fprintf(fp, "%s;%s;%s;%s;%s;%f\n", aux->nif, aux->nome, aux->username, aux->password, aux->morada, aux->saldo);
+			aux = aux->prox;
+		}
+
+		// Fecha o arquivo e libera a memória do ponteiro auxiliar
+		fclose(fp);
+		free(aux);
+
+		// Retorna 1 para indicar que a operação foi bem-sucedida
+		return(1);
+	}
+	else
+	{
+		// Retorna 0 para indicar que a operação falhou
+		return(0);
+	}
+}
+
+int guardarClientesGestor(Cliente* inicio)
+{
+	// Declara e inicializa o ponteiro de arquivo fp com a abertura do arquivo "clientes.txt" para escrita
+	FILE* fp;
 	fp = fopen("./clientes.txt", "a");
 
 	// Verifica se o arquivo foi aberto corretamente
@@ -19,7 +52,7 @@ int guardarClientes(Cliente* inicio)
 		// Percorre a lista de clientes e grava as informações de cada cliente no arquivo de texto
 		while (aux != NULL)
 		{
-			fprintf(fp, "%s;%s;%s;%s;%s;%.2f\n", aux->nif, aux->nome, aux->username, aux->password, aux->morada, aux->saldo);
+			fprintf(fp, "%s;%s;%s;%s;%s;%f\n", aux->nif, aux->nome, aux->username, aux->password, aux->morada, aux->saldo);
 			aux = aux->prox;
 		}
 
@@ -52,7 +85,7 @@ int guardarClientesAoEliminar(Cliente* inicio)
 		// Percorre a lista de clientes e grava as informações de cada cliente no arquivo de texto
 		while (aux != NULL)
 		{
-			fprintf(fp, "%s;%s;%s;%s;%s;%.2f\n", aux->nif, aux->nome, aux->username, aux->password, aux->morada, aux->saldo);
+			fprintf(fp, "%s;%s;%s;%s;%s;%f\n", aux->nif, aux->nome, aux->username, aux->password, aux->morada, aux->saldo);
 			aux = aux->prox;
 		}
 
@@ -100,7 +133,7 @@ Cliente* lerCliente()
 	char line[350];
 	while (fgets(line, 350, fp) != NULL)
 	{
-		sscanf(line, "%[^;];%[^;];%[^;];%[^;];%[^;];%.2f\n", n, nom, userNam, pass, mor, &sal);
+		sscanf(line, "%[^;];%[^;];%[^;];%[^;];%[^;];%f\n", n, nom, userNam, pass, mor, &sal);
 		aux = inserirCliente(aux, n, nom, userNam, pass, mor, sal);
 	}
 
@@ -201,20 +234,39 @@ void listarCliente(Cliente* inicio)
 }
 
 // verificar se o cliente com o NIF fornecido já existe na lista ligada
+
 int existeCliente(Cliente* inicio, char* nif)
 {
-	Cliente* aux = inicio;
-	while (aux != NULL)
-	{
-		if (strcmp(aux->nif, nif) == 0) // verifica se os NIFs são iguais
-		{
-			return(1); // retorna 1 caso o cliente já exista na lista
-		}
-		aux = aux->prox; // avança para o próximo elemento da lista
+	if (inicio == NULL || nif == NULL) {
+		// Handle null pointer error here
+		return 0;
 	}
-	free(aux); // libera a memória alocada para o último elemento da lista (que é NULL)
-	return(0); // retorna 0 caso o cliente não exista na lista
+	Cliente* aux = inicio;
+	while (aux) // check if aux is not NULL before executing the loop body
+	{
+		if (strcmp(aux->nif, nif) == 0)
+		{
+			return 1;
+		}
+		aux = aux->prox;
+	}
+	return 0;
 }
+
+//int existeCliente(Cliente* inicio, char* nif)
+//{
+//	Cliente* aux = inicio;
+//	while (aux != NULL)
+//	{
+//		if (strcmp(aux->nif, nif) == 0) // verifica se os NIFs são iguais
+//		{
+//			return(1); // retorna 1 caso o cliente já exista na lista
+//		}
+//		aux = aux->prox; // avança para o próximo elemento da lista
+//	}
+//	free(aux); // libera a memória alocada para o último elemento da lista (que é NULL)
+//	return(0); // retorna 0 caso o cliente não exista na lista
+//}
 
 char* loginCliente(Cliente* inicio, char* nomeUtilizador, char* palavraPasse)
 {

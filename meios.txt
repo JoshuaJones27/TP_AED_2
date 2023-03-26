@@ -1,5 +1,5 @@
-trotinete;1;12.00;2.00;///posers.college.nullify;0
-trotinete;2;80.00;3.00;///frequencies.calling.abode;1
-mota     ;3;70.00;4.00;///informative.pattered.torched;0
-bicicleta;4;19.00;5.00;///blazers.babbles.stimulants;0
-trotinete;5;15.00;6.00;///voluntarily.appointments.warps;0
+trotinete;1;12.000000;2.000000;///posers.college.nullify;0
+trotinete;2;80.000000;3.000000;///frequencies.calling.abode;1
+mota     ;3;70.000000;4.000000;///informative.pattered.torched;0
+bicicleta;4;19.000000;5.000000;///blazers.babbles.stimulants;0
+trotinete;5;15.000000;6.000000;///voluntarily.appointments.warps;1

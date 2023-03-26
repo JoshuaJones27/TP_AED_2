@@ -6,6 +6,29 @@
 int guardarMeiosEletricos(MeioEletrico* inicio)
 {
 	FILE* fp;
+	fp = fopen("./meios.txt", "w");
+
+	if (fp != NULL)
+	{
+		MeioEletrico* aux = inicio;
+		while (aux != NULL)
+		{
+			fprintf(fp, "%s;%d;%f;%f;%s;%d", aux->tipo, aux->id, aux->carga_bateria, aux->custo_hora, aux->geocodigo, aux->reservado);
+			aux = aux->prox;
+		}
+		fclose(fp);
+		free(aux);
+		return(1);
+	}
+	else
+	{
+		return(0);
+	}
+}
+
+int guardarMeiosEletricosGestor(MeioEletrico* inicio)
+{
+	FILE* fp;
 	fp = fopen("./meios.txt", "a");
 
 	if (fp != NULL)
@@ -13,7 +36,7 @@ int guardarMeiosEletricos(MeioEletrico* inicio)
 		MeioEletrico* aux = inicio;
 		while (aux != NULL)
 		{
-			fprintf(fp, "%s;%d;%.2f;%.2f;%s;%d", aux->tipo, aux->id, aux->carga_bateria, aux->custo_hora, aux->geocodigo, aux->reservado);
+			fprintf(fp, "%s;%d;%f;%f;%s;%d", aux->tipo, aux->id, aux->carga_bateria, aux->custo_hora, aux->geocodigo, aux->reservado);
 			aux = aux->prox;
 		}
 		fclose(fp);
@@ -48,7 +71,7 @@ MeioEletrico* lerMeioEletrico()
 	char line[350];
 	while (fgets(line, 350, fp) != NULL)
 	{
-		sscanf(line, "%[^;];%[^;];%.2f;%.2f;%[^;];%d\n", tip, id, &carga_bateri, &custo_hor, geocodig, &reservad);
+		sscanf(line, "%[^;];%[^;];%f;%f;%[^;];%d\n", tip, id, &carga_bateri, &custo_hor, geocodig, &reservad);
 		aux = inserirMeioEletrico(aux, tip, atoi(id), carga_bateri, custo_hor, geocodig, reservad);
 		if (inicio == NULL) // If this is the first node, set inicio to it
 			inicio = aux;
@@ -123,7 +146,7 @@ void alterarEstadoMeio(MeioEletrico* inicio, char* idMeioEletrico, int reserva)
 				// Traverse the linked list and write the contents of each node to the file
 				MeioEletrico* temp = inicio;
 				while (temp != NULL) {
-					fprintf(fp, "%s;%s;%.2f;%.2f;%s;%d\n", temp->tipo, temp->id, temp->carga_bateria, temp->custo_hora, temp->geocodigo, temp->reservado);
+					fprintf(fp, "%s;%s;%f;%f;%s;%d\n", temp->tipo, temp->id, temp->carga_bateria, temp->custo_hora, temp->geocodigo, temp->reservado);
 					temp = temp->prox;
 				}
 

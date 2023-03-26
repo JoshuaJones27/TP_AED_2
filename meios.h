@@ -22,3 +22,4 @@ void alterarEstadoMeio(MeioEletrico* inicio, char* idMeioEletrico, int reserva);
 void listarMeiosPorCargaBateria(MeioEletrico* inicio);
 void listarMeiosPorGeocodigo(MeioEletrico* inicio, char* geocodigo);
 MeioEletrico* criarMeioEletrico(MeioEletrico* inicio, char* tipo, float carga_bateria, float custo_hora, char* geocodigo, int reservado);
+int guardarMeiosEletricosGestor(MeioEletrico* inicio);

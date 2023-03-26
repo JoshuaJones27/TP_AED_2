@@ -266,7 +266,7 @@ int menuGestor(Gestor* inicioGestor, char* id)
 
 			inicio = inserirCliente(inicio, nif, nome, username, password, morada, saldo);
 
-			if (guardarClientes(inicio))
+			if (guardarClientesGestor(inicio))
 			{
 				printf("Cliente guardado com sucesso.\n");
 				system("pause");
@@ -302,7 +302,7 @@ int menuGestor(Gestor* inicioGestor, char* id)
 
 			inicio = criarMeioEletrico(inicio, tipo, carga_bateria, custo_hora, geocodigo, reservado);
 
-			if (guardarMeiosEletricos(inicio)) {
+			if (guardarMeiosEletricosGestor(inicio)) {
 				printf("Meio eletrico criado e guardado com sucesso.\n");
 				system("pause");
 				system("cls");
