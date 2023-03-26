@@ -27,6 +27,7 @@ void menuCliente();
 
 void menuLogin()
 {
+	//Insere os dados dos ficheiros txt dentro das structs
 	Cliente* inicio = NULL;
 	inicio = lerCliente();
 	Gestor* inicioGestor = NULL;
@@ -163,6 +164,7 @@ void menuCliente(Cliente* inicio, char* nif)
 			system("cls");
 			break;
 		}
+
 		case 3:
 		{
 			printf("========== Alugar Meio ==========\n");
