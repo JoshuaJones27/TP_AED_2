@@ -208,6 +208,7 @@ void menuCliente(Cliente* inicio, char* nif)
 			system("cls");
 			break;
 		}
+
 		case 5:
 		{
 			printf("========== Listar por Geocodigo ==========\n");

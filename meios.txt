@@ -3,3 +3,4 @@ trotinete;2;80.000000;3.000000;///frequencies.calling.abode;1
 mota     ;3;70.000000;4.000000;///informative.pattered.torched;0
 bicicleta;4;19.000000;5.000000;///blazers.babbles.stimulants;0
 trotinete;5;15.000000;6.000000;///voluntarily.appointments.warps;1
+mota     ;6;20.000000;7.000000;///voluntarily.appointments.warps;0
