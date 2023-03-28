@@ -30,9 +30,6 @@
     <ClCompile Include="gestor.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="reserva.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cliente.h">
@@ -42,9 +39,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="gestor.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="reserva.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
